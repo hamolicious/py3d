@@ -1,3 +1,4 @@
+from py3d.shapes import Prism
 import pygame
 from time import time
 from py3d import Cube
@@ -14,7 +15,7 @@ delta_time = 0 ; frame_start_time = 0
 #endregion
 
 walk_space = 100
-cube = Cube((300, 300 - walk_space, 300), 0, 200, screen)
+shape = Prism((300, 300 - walk_space, 300), 0, 200, screen)
 counter = 0
 
 while True:
@@ -30,15 +31,17 @@ while True:
 	key_press   = pygame.key.get_pressed()
 
 	rot_speed = 70
-	cube.rot.x += rot_speed * delta_time
-	cube.rot.y += (rot_speed/2) * delta_time
-	cube.rot.z += (rot_speed*0.1) * delta_time
-	cube.apply_transforms()
+	shape.rot.x += rot_speed * delta_time
+	shape.rot.y += (rot_speed/2) * delta_time
+	shape.rot.z += (rot_speed*0.1) * delta_time
+	shape.apply_transforms()
 
-	cube.pos.y += (sin(counter) * walk_space) * delta_time
+	shape.pos.y += (sin(counter) * walk_space) * delta_time
 	counter += 1 * delta_time
 
-	cube.display_faces()
+	shape.display_faces()
+	# shape.display_edges()
+	# shape.display_verts()
 
 	pygame.display.update()
 	clock.tick(fps)

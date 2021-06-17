@@ -39,7 +39,7 @@ class Face:
 	def get_normal_vec(self):
 		# calculate normal
 		a = self.parent.verts[self.indecies[1]].pos - self.parent.verts[self.indecies[0]].pos
-		b = self.parent.verts[self.indecies[3]].pos - self.parent.verts[self.indecies[0]].pos
+		b = self.parent.verts[self.indecies[2]].pos - self.parent.verts[self.indecies[0]].pos
 
 		normal = Vec3d.zero()
 		normal.x = (a.y * b.z) - (a.z * b.y)
@@ -90,7 +90,7 @@ class Face:
 
 		proj = self.project_vec(Vec3d(0, 0, 1), self.get_normal_vec())
 
-		if proj > 0:
+		if proj > 0 or 1 == 1:
 			color = self.parent.face_color.copy()
 			color *= (proj + 1) / 2
 			pygame.draw.polygon(screen, color.get(), p)

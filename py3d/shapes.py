@@ -3,13 +3,23 @@ from py3d.primitives import Vertex, Face
 import pygame
 
 class Shape:
+	def get_defualt_verts(self):
+		DEFAULT_VERTS = [
+		]
+		return [i.copy() for i in DEFAULT_VERTS]
+
+	def get_defualt_faces(self):
+		DEFAULT_FACES = [
+		]
+		return [i.copy() for i in DEFAULT_FACES]
+
 	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
 		self.pos = Vec3d(pos)
 		self.rot = Vec3d(rot)
 		self.size = Vec3d(size)
 
-		self.verts = []
-		self.faces = []
+		self.verts = self.get_defualt_verts()
+		self.faces = self.get_defualt_faces()
 
 		self.screen = screen
 
@@ -37,7 +47,7 @@ class Shape:
 			v.parent = self
 
 	def apply_transforms(self):
-		self.verts = Cube.get_defualt_verts()
+		self.verts = self.get_defualt_verts()
 		self.assign_parent()
 
 		for v in self.verts:
@@ -74,50 +84,60 @@ class Shape:
 		for f in self.faces:
 			f.display_face(self.screen)
 
+
 class Cube(Shape):
-	#region Static Methods
-	DEFAULT_VERTS = [
-		Vertex((-0.5, -0.5, -0.5)), # 0
-		Vertex(( 0.5, -0.5, -0.5)), # 1
-		Vertex(( 0.5, -0.5,  0.5)), # 2
-		Vertex((-0.5, -0.5,  0.5)), # 3
-		Vertex((-0.5,  0.5, -0.5)), # 4
-		Vertex(( 0.5,  0.5, -0.5)), # 5
-		Vertex(( 0.5,  0.5,  0.5)), # 6
-		Vertex((-0.5,  0.5,  0.5)), # 7
-	]
+	def get_defualt_verts(self):
+		DEFAULT_VERTS = [
+			Vertex((-0.5, -0.5, -0.5)), # 0
+			Vertex(( 0.5, -0.5, -0.5)), # 1
+			Vertex(( 0.5, -0.5,  0.5)), # 2
+			Vertex((-0.5, -0.5,  0.5)), # 3
+			Vertex((-0.5,  0.5, -0.5)), # 4
+			Vertex(( 0.5,  0.5, -0.5)), # 5
+			Vertex(( 0.5,  0.5,  0.5)), # 6
+			Vertex((-0.5,  0.5,  0.5)), # 7
+		]
+		return [i.copy() for i in DEFAULT_VERTS]
 
-	DEFAULT_FACES = [
-		Face([0, 1, 2, 3]), # TOP
-		Face([4, 5, 6, 7]), # BOTTOM
-		Face([0, 1, 5, 4]), # FRONT
-		Face([2, 3, 7, 6]), # BACK
-		Face([0, 3, 7, 4]), # LEFT
-		Face([1, 2, 6, 5]), # RIGHT
-	]
-
-	@staticmethod
-	def get_defualt_verts():
-		return [i.copy() for i in Cube.DEFAULT_VERTS]
-
-	@staticmethod
-	def get_defualt_faces():
-		return [i.copy() for i in Cube.DEFAULT_FACES]
-
-	#endregion Static Methods
+	def get_defualt_faces(self):
+		DEFAULT_FACES = [
+			Face([0, 1, 2, 3]), # TOP
+			Face([4, 5, 6, 7]), # BOTTOM
+			Face([0, 1, 5, 4]), # FRONT
+			Face([2, 3, 7, 6]), # BACK
+			Face([0, 3, 7, 4]), # LEFT
+			Face([1, 2, 6, 5]), # RIGHT
+		]
+		return [i.copy() for i in DEFAULT_FACES]
 
 	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
 		super().__init__(pos, rot, size, screen)
 
-		self.verts = Cube.get_defualt_verts()
-		self.faces = Cube.get_defualt_faces()
 
-		self.assign_parent()
-		self.apply_transforms()
+class Prism(Shape):
+	def get_defualt_verts(self):
+		DEFAULT_VERTS = [
+			Vertex((   0,  0.5,    0)), # 0
+			Vertex((-0.5, -0.5, -0.5)), # 1
+			Vertex(( 0.5, -0.5, -0.5)), # 2
+			Vertex(( 0.5, -0.5,  0.5)), # 3
+			Vertex((-0.5, -0.5,  0.5)), # 4
+		]
+		return [i.copy() for i in DEFAULT_VERTS]
 
+	def get_defualt_faces(self):
+		DEFAULT_FACES = [
+			Face([0, 1, 2]),
+			Face([0, 2, 3]),
+			Face([0, 3, 4]),
+			Face([0, 4, 1]),
+			Face([1, 2, 3, 4]),
+		]
 
+		return [i.copy() for i in DEFAULT_FACES]
 
-
+	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
+		super().__init__(pos, rot, size, screen)
 
 
 
