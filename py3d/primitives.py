@@ -11,34 +11,16 @@ class Vertex:
 		return Vertex(self.pos.copy())
 
 	def rotate_x(self, a):
-		x, y, z = self.pos.get()
 		a = radians(a)
-		ca = cos(a)
-		sa = sin(a)
-
-		self.pos.x = (1 * x) + (0 * y) + (0 * z)
-		self.pos.y = (0 * x) + (ca * y) + (-sa * z)
-		self.pos.z = (0 * x) + (sa * y) + (ca * z)
+		self.pos.rotate_x(a)
 
 	def rotate_y(self, a):
-		x, y, z = self.pos.get()
 		a = radians(a)
-		ca = cos(a)
-		sa = sin(a)
-
-		self.pos.x = (ca * x) + (0 * y) + (sa * z)
-		self.pos.y = (0 * x) + (1 * y) + (0 * z)
-		self.pos.z = (-sa * x) + (0 * y) + (ca * z)
+		self.pos.rotate_y(a)
 
 	def rotate_z(self, a):
-		x, y, z = self.pos.get()
 		a = radians(a)
-		ca = cos(a)
-		sa = sin(a)
-
-		self.pos.x = (ca * x) + (-sa * y) + (0 * z)
-		self.pos.y = (sa * x) + (ca * y) + (0 * z)
-		self.pos.z = (0 * x) + (0 * y) + (1 * z)
+		self.pos.rotate_z(a)
 
 	def to2d(self):
 		return (self.pos + self.parent.pos).get_int()[:2]
