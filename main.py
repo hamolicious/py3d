@@ -2,6 +2,7 @@ import pygame
 from time import time
 from py3d import Cube
 from vector import Color
+from math import sin
 
 #region pygame init
 pygame.init()
@@ -12,7 +13,9 @@ clock, fps = pygame.time.Clock(), 0
 delta_time = 0 ; frame_start_time = 0
 #endregion
 
-cube = Cube(300, 0, 200, screen)
+walk_space = 100
+cube = Cube((300, 300 - walk_space, 300), 0, 200, screen)
+counter = 0
 
 while True:
 	for event in pygame.event.get():
@@ -31,6 +34,9 @@ while True:
 	cube.rot.y += (rot_speed/2) * delta_time
 	cube.rot.z += (rot_speed*0.1) * delta_time
 	cube.apply_transforms()
+
+	cube.pos.y += (sin(counter) * walk_space) * delta_time
+	counter += 1 * delta_time
 
 	cube.display_faces()
 
