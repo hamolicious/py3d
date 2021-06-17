@@ -1,5 +1,5 @@
 
-from py3d.shapes import Cube
+from py3d.shapes import Shape, Cube, Prism
 
 
 

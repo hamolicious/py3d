@@ -1,7 +1,6 @@
-from py3d.shapes import Prism
 import pygame
 from time import time
-from py3d import Cube
+from py3d import Cube, Prism
 from vector import Color
 from math import sin
 
@@ -15,8 +14,13 @@ delta_time = 0 ; frame_start_time = 0
 #endregion
 
 walk_space = 100
-shape = Prism((300, 300 - walk_space, 300), 0, 200, screen)
+rot_speed = 70
 counter = 0
+
+loaded_shapes = [
+	Prism((150, 300 - walk_space, 300), 0, 200, screen),
+	Cube((450, 300 - walk_space, 300), 0, 200, screen),
+]
 
 while True:
 	for event in pygame.event.get():
@@ -30,18 +34,18 @@ while True:
 	mouse_press = pygame.mouse.get_pressed()
 	key_press   = pygame.key.get_pressed()
 
-	rot_speed = 70
-	shape.rot.x += rot_speed * delta_time
-	shape.rot.y += (rot_speed/2) * delta_time
-	shape.rot.z += (rot_speed*0.1) * delta_time
-	shape.apply_transforms()
+	for shape in loaded_shapes:
+		shape.rot.x += rot_speed * delta_time
+		shape.rot.y += (rot_speed/2) * delta_time
+		shape.rot.z += (rot_speed*0.1) * delta_time
+		shape.apply_transforms()
 
-	shape.pos.y += (sin(counter) * walk_space) * delta_time
-	counter += 1 * delta_time
+		shape.pos.y += (sin(counter) * walk_space) * delta_time
+		counter += 1 * delta_time
 
-	shape.display_faces()
-	# shape.display_edges()
-	# shape.display_verts()
+		shape.display_faces()
+		# shape.display_edges()
+		# shape.display_verts()
 
 	pygame.display.update()
 	clock.tick(fps)
