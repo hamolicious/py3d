@@ -3,17 +3,42 @@ from py3d.primitives import Vertex, Face
 import pygame
 
 class Shape:
+	@staticmethod
+	def from_obj_file(filepath, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface):
+		shape = Shape(pos, rot, size, screen)
+
+		with open(filepath, 'r') as file:
+			raw_data = file.readlines()
+
+		vertecies = []
+		faces = []
+
+		for line in raw_data:
+			if line.startswith('v '):
+				x, y, z = line.replace('v ', '').split(' ')
+				v = Vertex((float(x), float(y), float(z)))
+				vertecies.append(v)
+			elif line.startswith('f '):
+				f = Face([])
+				for index in line.replace('f ', '').split(' '):
+					f.indecies.append(int(index.split('/')[0])-1)
+				faces.append(f)
+
+		shape._DEFAULT_VERTS = vertecies
+		shape._DEFAULT_FACES = faces
+
+		return shape
+
 	def get_defualt_verts(self):
-		DEFAULT_VERTS = [
-		]
-		return [i.copy() for i in DEFAULT_VERTS]
+		return [i.copy() for i in self._DEFAULT_VERTS]
 
 	def get_defualt_faces(self):
-		DEFAULT_FACES = [
-		]
-		return [i.copy() for i in DEFAULT_FACES]
+		return [i.copy() for i in self._DEFAULT_FACES]
 
 	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
+		self._DEFAULT_VERTS = []
+		self._DEFAULT_FACES = []
+
 		self.pos = Vec3d(pos)
 		self.rot = Vec3d(rot)
 		self.size = Vec3d(size)
@@ -48,6 +73,7 @@ class Shape:
 
 	def apply_transforms(self):
 		self.verts = self.get_defualt_verts()
+		self.faces = self.get_defualt_faces()
 		self.assign_parent()
 
 		for v in self.verts:
@@ -87,7 +113,15 @@ class Shape:
 
 class Cube(Shape):
 	def get_defualt_verts(self):
-		DEFAULT_VERTS = [
+		return [i.copy() for i in self._DEFAULT_VERTS]
+
+	def get_defualt_faces(self):
+		return [i.copy() for i in self._DEFAULT_FACES]
+
+	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
+		super().__init__(pos, rot, size, screen)
+
+		self._DEFAULT_VERTS = [
 			Vertex((-0.5, -0.5, -0.5)), # 0
 			Vertex(( 0.5, -0.5, -0.5)), # 1
 			Vertex(( 0.5, -0.5,  0.5)), # 2
@@ -97,10 +131,7 @@ class Cube(Shape):
 			Vertex(( 0.5,  0.5,  0.5)), # 6
 			Vertex((-0.5,  0.5,  0.5)), # 7
 		]
-		return [i.copy() for i in DEFAULT_VERTS]
-
-	def get_defualt_faces(self):
-		DEFAULT_FACES = [
+		self._DEFAULT_FACES = [
 			Face([0, 1, 2, 3]), # TOP
 			Face([4, 5, 6, 7]), # BOTTOM
 			Face([0, 1, 5, 4]), # FRONT
@@ -108,25 +139,26 @@ class Cube(Shape):
 			Face([0, 3, 7, 4]), # LEFT
 			Face([1, 2, 6, 5]), # RIGHT
 		]
-		return [i.copy() for i in DEFAULT_FACES]
-
-	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
-		super().__init__(pos, rot, size, screen)
 
 
 class Prism(Shape):
 	def get_defualt_verts(self):
-		DEFAULT_VERTS = [
+		return [i.copy() for i in self._DEFAULT_VERTS]
+
+	def get_defualt_faces(self):
+		return [i.copy() for i in self._DEFAULT_FACES]
+
+	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
+		super().__init__(pos, rot, size, screen)
+
+		self._DEFAULT_VERTS = [
 			Vertex((   0,  0.5,    0)), # 0
 			Vertex((-0.5, -0.5, -0.5)), # 1
 			Vertex(( 0.5, -0.5, -0.5)), # 2
 			Vertex(( 0.5, -0.5,  0.5)), # 3
 			Vertex((-0.5, -0.5,  0.5)), # 4
 		]
-		return [i.copy() for i in DEFAULT_VERTS]
-
-	def get_defualt_faces(self):
-		DEFAULT_FACES = [
+		self._DEFAULT_FACES = [
 			Face([0, 1, 2]),
 			Face([0, 2, 3]),
 			Face([0, 3, 4]),
@@ -134,10 +166,6 @@ class Prism(Shape):
 			Face([1, 2, 3, 4]),
 		]
 
-		return [i.copy() for i in DEFAULT_FACES]
-
-	def __init__(self, pos: Vec3d, rot: Vec3d, size: Vec3d, screen: pygame.Surface) -> None:
-		super().__init__(pos, rot, size, screen)
 
 
 

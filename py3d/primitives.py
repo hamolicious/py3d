@@ -1,11 +1,13 @@
-from vector import Vec3d, Color
+from vector import Vec2d, Vec3d, Color
 from math import sin, cos, radians
 import pygame
 
 class Vertex:
-	def __init__(self, pos: Vec3d) -> None:
+	def __init__(self, pos: Vec3d, **kwargs) -> None:
 		self.pos = Vec3d(pos)
 		self.parent = None
+
+		self.uv = kwargs.get('uv', Vec2d())
 
 	def copy(self):
 		return Vertex(self.pos.copy())
@@ -28,10 +30,15 @@ class Vertex:
 	def display(self, screen):
 		pygame.draw.circle(screen, self.parent.vert_color.get(), self.to2d(), 2)
 
+	def __repr__(self) -> str:
+		return f'Vertex: {self.pos.x} {self.pos.y} {self.pos.z}'
+
 class Face:
-	def __init__(self, indecies: list[int]) -> None:
+	def __init__(self, indecies: list[int], **kwargs) -> None:
 		self.indecies = indecies
 		self.parent = None
+
+		self.normal = kwargs.get('normal', Vec3d())
 
 		self.__min_proj = 0
 
@@ -81,9 +88,9 @@ class Face:
 		for i in self.indecies:
 			p.append(self.parent.verts[i].to2d())
 
-		proj = self.project_vec(Vec3d(0, 0, 1), self.get_normal_vec())
-		if proj > self.__min_proj:
-			pygame.draw.polygon(screen, self.parent.face_color.get(), p)
+		# proj = self.project_vec(Vec3d(0, 0, 1), self.get_normal_vec())
+		# if proj > self.__min_proj:
+		pygame.draw.polygon(screen, self.parent.face_color.get(), p)
 
 	def display_face(self, screen):
 		p = []
@@ -97,7 +104,8 @@ class Face:
 			color *= (proj + 1) / 2
 			pygame.draw.polygon(screen, color.get(), p)
 
-
+	def __repr__(self) -> str:
+		return f'Face vertex_count: {len(self.indecies)}'
 
 
 

@@ -1,6 +1,6 @@
 import pygame
 from time import time
-from py3d import Cube, Prism
+from py3d import Cube, Prism, Shape
 from vector import Color
 from math import sin
 
@@ -13,13 +13,15 @@ clock, fps = pygame.time.Clock(), 0
 delta_time = 0 ; frame_start_time = 0
 #endregion
 
-walk_space = 100
 rot_speed = 70
-counter = 0
+
+s = Shape.from_obj_file(
+	r'E:\Programing_Projects\Python\---3D---\py3d\TestModels\cesna.obj',
+	300, 0, 10, screen
+)
 
 loaded_shapes = [
-	Prism((150, 300 - walk_space, 300), 0, 200, screen),
-	Cube((450, 300 - walk_space, 300), 0, 200, screen),
+	s
 ]
 
 while True:
@@ -40,9 +42,7 @@ while True:
 		shape.rot.z += (rot_speed*0.1) * delta_time
 		shape.apply_transforms()
 
-		shape.pos.y += (sin(counter) * walk_space) * delta_time
-		counter += 1 * delta_time
-
+		# shape.display_faces_unlit()
 		shape.display_faces()
 		# shape.display_edges()
 		# shape.display_verts()
