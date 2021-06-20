@@ -3,3 +3,10 @@ A 3D Engine Written in Python and PyGame. This project is being developed as an 
 
 ![screenshot](https://github.com/hamolicious/py3d/blob/master/screenshots/Screenshot%202021-06-17%20133434.png?raw=true)
 
+---
+
+## TODOs
+- [ ] Add normal's loading and rotations
+- [ ] Add multiple lighting system
+- [ ] Add camera system
+- [ ] Add world transformations
